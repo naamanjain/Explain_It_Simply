@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Explain It Simply</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d0d0d;--surface:#161616;--surface2:#1e1e1e;
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.13);
+  --fg:#f0ede8;--fg2:#8a8580;--fg3:#4a4742;
+  --accent:#e8c97d;--eli5:#f4a261;--tech:#74b9ff;--green:#4ec9b0;
+}
+body{background:var(--bg);color:var(--fg);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;min-height:100vh;overflow-x:hidden;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 6%;height:60px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(13,13,13,0.9);backdrop-filter:blur(16px);}
+.nav-logo{font-family:'Instrument Serif',serif;font-size:19px;color:var(--fg);cursor:pointer}
+.nav-logo span{color:var(--accent)}
+.nav-try{font-size:13px;font-weight:500;color:#0d0d0d;background:var(--accent);border:none;border-radius:100px;padding:8px 20px;cursor:pointer;transition:opacity .2s;}
+.nav-try:hover{opacity:.85}
+
+/* ── LANDING PAGE ── */
+#landing{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 6% 60px;text-align:center;position:relative;overflow:hidden;}
+#landing::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 30%,rgba(232,201,125,0.07) 0%,transparent 70%);pointer-events:none;}
+.eyebrow{font-size:11px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:28px;opacity:.9;}
+h1{font-family:'Instrument Serif',serif;font-size:clamp(52px,8vw,96px);font-weight:400;line-height:1.0;letter-spacing:-0.02em;color:var(--fg);margin-bottom:24px;}
+h1 em{font-style:italic;color:var(--accent)}
+.hero-sub{font-size:clamp(15px,2vw,18px);font-weight:300;color:var(--fg2);max-width:520px;line-height:1.8;margin:0 auto 48px;}
+.topic-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;max-width:720px;width:100%;margin-bottom:48px;}
+.topic-card{background:var(--surface);border:1px solid var(--border2);border-radius:14px;padding:16px 14px;cursor:pointer;transition:border-color .2s,transform .15s;text-align:left;}
+.topic-card:hover{border-color:rgba(232,201,125,0.5);transform:translateY(-3px)}
+.topic-icon{font-size:22px;margin-bottom:8px}
+.topic-name{font-size:13px;font-weight:500;color:var(--fg);margin-bottom:3px}
+.topic-hint{font-size:11px;color:var(--fg3)}
+.try-btn{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:#0d0d0d;font-size:15px;font-weight:500;padding:14px 36px;border-radius:100px;border:none;cursor:pointer;transition:opacity .2s,transform .15s;}
+.try-btn:hover{opacity:.88;transform:translateY(-2px)}
+.how-section{padding:80px 0 0;max-width:900px;width:100%;text-align:center;}
+.section-label{font-size:11px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--fg3);margin-bottom:14px}
+h2{font-family:'Instrument Serif',serif;font-size:clamp(28px,4vw,48px);font-weight:400;letter-spacing:-0.02em;margin-bottom:40px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.step{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:26px 20px;text-align:left}
+.step-num{font-family:'Instrument Serif',serif;font-size:38px;color:var(--accent);opacity:.35;line-height:1;margin-bottom:12px}
+.step h3{font-size:14px;font-weight:500;margin-bottom:8px}
+.step p{font-size:13px;color:var(--fg2);line-height:1.7}
+
+/* ── APP PAGE ── */
+#app{display:none;min-height:100vh;padding-top:60px;}
+#app.active{display:block}
+.app-hero{padding:60px 6% 40px;text-align:center;}
+.app-title{font-family:'Instrument Serif',serif;font-size:clamp(32px,5vw,56px);font-weight:400;letter-spacing:-0.02em;margin-bottom:12px}
+.app-title em{font-style:italic;color:var(--accent)}
+.app-sub{font-size:15px;color:var(--fg2);margin-bottom:36px}
+.input-card{width:100%;max-width:680px;background:var(--surface);border:1px solid var(--border2);border-radius:20px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.5),0 40px 80px rgba(0,0,0,.4);margin:0 auto;}
+.input-top{padding:20px 20px 0}
+.input-row{display:flex;align-items:flex-end;gap:10px;}
+textarea#query{flex:1;background:transparent;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--fg);resize:none;line-height:1.6;height:52px;max-height:160px;overflow-y:auto;padding:12px 0;}
+textarea#query::placeholder{color:var(--fg3)}
+.btns{display:flex;gap:8px;margin-bottom:6px;}
+.send-btn{width:40px;height:40px;border-radius:12px;background:var(--accent);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity .2s,transform .15s;}
+.send-btn:hover{opacity:.85;transform:scale(1.05)}
+.send-btn svg{color:#0d0d0d}
+.voice-btn{width:40px;height:40px;border-radius:12px;background:var(--surface2);border:1px solid var(--border2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.voice-btn:hover{border-color:rgba(244,162,97,0.5)}
+.voice-btn.listening{background:rgba(244,162,97,0.15);border-color:var(--eli5);animation:vpulse 1.2s ease-in-out infinite}
+@keyframes vpulse{0%,100%{box-shadow:0 0 0 0 rgba(244,162,97,0.3)}50%{box-shadow:0 0 0 8px rgba(244,162,97,0)}}
+.input-bottom{display:flex;align-items:center;gap:8px;padding:12px 20px 16px;flex-wrap:wrap;}
+.chips-label{font-size:11px;color:var(--fg3);white-space:nowrap}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:11px;font-weight:500;color:var(--fg2);padding:4px 10px;border-radius:100px;border:1px solid var(--border2);cursor:pointer;transition:color .15s,border-color .15s;user-select:none;}
+.chip:hover{color:var(--fg);border-color:var(--fg3)}
+.voice-hint{font-size:11px;color:var(--eli5);text-align:center;padding:4px;display:none;}
+.voice-hint.show{display:block}
+.loading{display:none;padding:60px 6%;max-width:780px;margin:0 auto;text-align:center;}
+.loading.visible{display:block}
+.dots{display:flex;gap:10px;justify-content:center;margin-bottom:20px;}
+.dots span{width:8px;height:8px;border-radius:50%;background:var(--border2);animation:dot 1.4s ease-in-out infinite;}
+.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+@keyframes dot{0%,80%,100%{transform:scale(.6);opacity:.3}40%{transform:scale(1);opacity:1}}
+.loading p{font-size:14px;color:var(--fg3);font-style:italic}
+.err{display:none;padding:18px 22px;border-radius:14px;border:1px solid rgba(255,100,100,0.2);background:rgba(255,100,100,0.05);font-size:14px;color:rgba(255,120,120,.85);max-width:680px;margin:20px auto;}
+.err.show{display:block}
+#out{display:none;padding:40px 6% 80px;max-width:820px;margin:0 auto;}
+#out.show{display:block;animation:fadein .5s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.result-q{font-family:'Instrument Serif',serif;font-size:clamp(22px,3vw,34px);font-weight:400;line-height:1.2;letter-spacing:-0.01em;margin-bottom:32px;color:var(--fg);}
+.result-q::before{content:'"';color:var(--accent);opacity:.5;margin-right:4px;}
+.result-q::after{content:'"';color:var(--accent);opacity:.5;margin-left:4px;}
+.mode-row{display:flex;gap:10px;margin-bottom:32px;flex-wrap:wrap;}
+.mbtn{padding:10px 24px;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border2);background:transparent;color:var(--fg2);transition:all .2s;}
+.mbtn.eli5-on{background:rgba(244,162,97,0.15);border-color:rgba(244,162,97,0.5);color:var(--eli5)}
+.mbtn.tech-on{background:rgba(116,185,255,0.12);border-color:rgba(116,185,255,0.4);color:var(--tech)}
+.panel{display:none}
+.panel.on{display:block;animation:fadein .3s ease}
+.blabel{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;margin-bottom:20px;}
+.blabel .badge{padding:3px 10px;border-radius:100px;font-size:10px;font-weight:600;}
+.e-badge{background:rgba(244,162,97,0.15);color:var(--eli5)}
+.t-badge{background:rgba(116,185,255,0.12);color:var(--tech)}
+.blabel .line{flex:1;height:1px;background:var(--border)}
+.eli5-txt{font-family:'Instrument Serif',serif;font-size:clamp(19px,2.5vw,26px);line-height:1.75;color:var(--fg);margin-bottom:28px;}
+.tech-intro{font-size:15px;line-height:1.8;color:rgba(240,237,232,.85);margin-bottom:16px;}
+.tech-list{list-style:none;margin-bottom:8px;}
+.tech-list li{display:flex;gap:12px;margin-bottom:10px;font-size:14px;line-height:1.75;color:rgba(240,237,232,.75);}
+.tech-list li::before{content:'▸';color:var(--tech);flex-shrink:0;margin-top:3px;font-size:12px}
+.keybox{padding:20px 22px;border-radius:14px;background:rgba(232,201,125,0.06);border:1px solid rgba(232,201,125,0.15);margin-top:28px;}
+.keybox-lbl{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;opacity:.8}
+.keybox-txt{font-size:15px;line-height:1.7;color:var(--fg);font-weight:500;}
+footer{border-top:1px solid var(--border);padding:28px 6%;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--fg3);}
+.fbadge{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:4px 10px;font-size:11px;color:var(--fg2);display:flex;align-items:center;gap:6px;}
+.fdot{width:6px;height:6px;border-radius:50%;background:var(--green)}
+@media(max-width:640px){h1{letter-spacing:-.03em}.steps{grid-template-columns:1fr}.topic-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo" onclick="showLanding()">Explain It <span>Simply</span></div>
+  <button class="nav-try" onclick="showApp()">Try the App →</button>
+</nav>
+
+<!-- ══════════ LANDING PAGE ══════════ -->
+<div id="landing">
+  <div class="eyebrow">AI-Powered Explanations</div>
+  <h1>Understand anything,<br><em>instantly.</em></h1>
+  <p class="hero-sub">Get two layers of explanation for any concept — a simple analogy anyone can grasp, and a technical deep-dive for developers and students.</p>
+
+  <div class="topic-grid">
+    <div class="topic-card" onclick="openTopic('What is recursion?')">
+      <div class="topic-icon">🔁</div>
+      <div class="topic-name">Recursion</div>
+      <div class="topic-hint">Functions calling themselves</div>
+    </div>
+    <div class="topic-card" onclick="openTopic('What is a REST API?')">
+      <div class="topic-icon">🔗</div>
+      <div class="topic-name">REST API</div>
+      <div class="topic-hint">How apps talk to each other</div>
+    </div>
+    <div class="topic-card" onclick="openTopic('What is machine learning?')">
+      <div class="topic-icon">🤖</div>
+      <div class="topic-name">Machine Learning</div>
+      <div class="topic-hint">Computers that learn</div>
+    </div>
+    <div class="topic-card" onclick="openTopic('What is HTTPS?')">
+      <div class="topic-icon">🔒</div>
+      <div class="topic-name">HTTPS</div>
+      <div class="topic-hint">Secure web connections</div>
+    </div>
+    <div class="topic-card" onclick="openTopic('What is Big O notation?')">
+      <div class="topic-icon">📊</div>
+      <div class="topic-name">Big O Notation</div>
+      <div class="topic-hint">Measuring algorithm speed</div>
+    </div>
+    <div class="topic-card" onclick="openTopic('What is an Array?')">
+      <div class="topic-icon">📦</div>
+      <div class="topic-name">Array</div>
+      <div class="topic-hint">Ordered data collections</div>
+    </div>
+    <div class="topic-card" onclick="openTopic('What is a Pointer?')">
+      <div class="topic-icon">📍</div>
+      <div class="topic-name">Pointer</div>
+      <div class="topic-hint">Memory addresses in code</div>
+    </div>
+  </div>
+
+  <button class="try-btn" onclick="showApp()">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
+    Try the App
+  </button>
+
+  <div class="how-section">
+    <div class="section-label">How it works</div>
+    <h2>Two layers of understanding</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Type or speak your question</h3>
+        <p>Ask about any of the 7 topics by typing, clicking a chip, or pressing the mic button to speak.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Get a simple explanation</h3>
+        <p>A plain-English analogy that anyone — even a 5-year-old — can understand. No jargon, just clarity.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Then go deep technically</h3>
+        <p>Switch to Technical view for a university-level breakdown with bullet points and precise definitions.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ APP PAGE ══════════ -->
+<div id="app">
+  <div class="app-hero">
+    <h1 class="app-title">What would you like to <em>understand?</em></h1>
+    <p class="app-sub">Type a topic, click a suggestion, or press the 🎤 mic to speak</p>
+    <div class="input-card">
+      <div class="input-top">
+        <div class="input-row">
+          <textarea id="query" placeholder="e.g. What is recursion?" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+          <div class="btns">
+            <button class="voice-btn" id="voiceBtn" onclick="toggleVoice()" title="Speak your question">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            </button>
+            <button class="send-btn" onclick="explain()" title="Explain">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2" fill="currentColor" stroke="none"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="voice-hint" id="voiceHint">🎤 Listening... speak now</div>
+      <div class="input-bottom">
+        <span class="chips-label">Try:</span>
+        <div class="chips">
+          <div class="chip" onclick="ask('What is recursion?')">Recursion</div>
+          <div class="chip" onclick="ask('What is a REST API?')">REST API</div>
+          <div class="chip" onclick="ask('What is machine learning?')">Machine Learning</div>
+          <div class="chip" onclick="ask('What is HTTPS?')">HTTPS</div>
+          <div class="chip" onclick="ask('What is Big O notation?')">Big O</div>
+          <div class="chip" onclick="ask('What is an Array?')">Array</div>
+          <div class="chip" onclick="ask('What is a Pointer?')">Pointer</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="dots"><span></span><span></span><span></span></div>
+    <p id="loadmsg">Thinking about this...</p>
+  </div>
+  <div class="err" id="err"></div>
+
+  <section id="out">
+    <div class="result-q" id="rq"></div>
+    <div class="mode-row">
+      <button class="mbtn eli5-on" id="b1" onclick="mode('eli5')">🟠 Simple — Like I'm 5</button>
+      <button class="mbtn" id="b2" onclick="mode('tech')">🔵 Technical — University Level</button>
+    </div>
+    <div class="panel on" id="p-eli5">
+      <div class="blabel"><span class="badge e-badge">Explain Like I'm 5</span><div class="line"></div></div>
+      <div class="eli5-txt" id="eli5"></div>
+      <div class="keybox"><div class="keybox-lbl">Key Takeaway</div><div class="keybox-txt" id="key1"></div></div>
+    </div>
+    <div class="panel" id="p-tech">
+      <div class="blabel"><span class="badge t-badge">Technical Breakdown</span><div class="line"></div></div>
+      <div class="tech-intro" id="tintro"></div>
+      <ul class="tech-list" id="tlist"></ul>
+      <div class="keybox"><div class="keybox-lbl">Key Takeaway</div><div class="keybox-txt" id="key2"></div></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Explain It Simply · Hackathon Project</span>
+    <div class="fbadge"><div class="fdot"></div> 7 Topics · Voice Enabled</div>
+  </footer>
+</div>
+
+<script>
+const KB={
+  recursion:{eli5:"Imagine you are looking for your toy inside a big box full of smaller boxes. You open the first box and inside is another box. So you open that one too. Again and again until you finally find the toy! That is recursion — something that keeps doing the same thing to itself over and over until it reaches the end.",intro:"Recursion is when a function solves a problem by calling itself with a smaller version of the same problem.",bullets:["A recursive function calls itself as part of its own execution.","Every recursive function needs a base case — a stopping condition. Without it you get a stack overflow error.","Each call is added to the call stack. When the base case is reached, the stack unwinds in reverse.","Used in: merge sort, binary search, tree traversal, and factorial calculation.","Space complexity is O(depth) because each call takes up space on the stack."],key:"Recursion breaks a big problem into smaller versions of itself, repeating until it hits a base case simple enough to solve directly."},
+  restapi:{eli5:"Imagine a waiter at a restaurant. You tell the waiter what you want. The waiter goes to the kitchen and brings back your food. A REST API is that waiter — it carries requests and responses between your app and a server.",intro:"REST API is a standardised way for applications to communicate over the internet using HTTP methods.",bullets:["GET = read data, POST = create data, PUT = update data, DELETE = remove data.","Stateless — every request contains all the info needed, the server remembers nothing between requests.","Resources are identified by URLs called endpoints, for example /api/users/42.","Responses are usually in JSON format which is lightweight and easy to read.","Widely used because it works with any programming language and any network."],key:"A REST API lets applications talk to each other over HTTP using URLs and standard methods like GET and POST."},
+  ml:{eli5:"Imagine teaching a puppy tricks. You do not write exact instructions — you show examples and give treats when it gets it right. Over time the puppy learns the pattern itself. Machine learning is the same — a computer learns from thousands of examples instead of being told exactly what to do every time.",intro:"Machine learning is where algorithms learn patterns from data to make predictions without being explicitly programmed for each case.",bullets:["Supervised learning — trains on labelled data where the correct answer is already known.","Unsupervised learning — finds hidden patterns in data that has no labels.","Reinforcement learning — an agent learns by receiving rewards for good actions and penalties for bad ones.","The model improves by adjusting its weights using a process called backpropagation.","Common algorithms: decision trees, neural networks, random forests, support vector machines."],key:"Machine learning lets computers learn from data and get better at tasks over time without being explicitly programmed for every scenario."},
+  https:{eli5:"Imagine you and a friend invent a secret code. You write your message in that code and send it. Even if someone steals it they cannot read it. HTTPS does the same thing — every message between you and a website is scrambled into a secret code so nobody in the middle can spy on it.",intro:"HTTPS is HTTP with TLS encryption added, providing privacy, security, and proof that you are talking to the right server.",bullets:["The server proves its identity using an SSL certificate signed by a trusted Certificate Authority.","Asymmetric encryption is used during the handshake to safely agree on a shared secret session key.","All data is then encrypted using that session key with AES-256 encryption.","Prevents man-in-the-middle attacks, eavesdropping, and data tampering.","HTTPS runs on port 443. HTTP runs on port 80. Browsers show a padlock for HTTPS sites."],key:"HTTPS encrypts all data between your browser and a website so no third party can read, modify, or steal what you send or receive."},
+  bigo:{eli5:"Imagine checking drawers one by one to find your keys. Double the drawers means double the time — that is O(n). But if you magically know which drawer to open it always takes the same time no matter how many drawers — that is O(1). Big O just describes how much slower something gets as it gets bigger.",intro:"Big O notation describes how the speed or memory usage of an algorithm grows as the input size increases.",bullets:["O(1) — Constant time. Always the same speed regardless of input size. Example: array index access.","O(log n) — Logarithmic. Cuts the problem in half each step. Example: binary search.","O(n) — Linear. Speed grows proportionally with input. Example: looping through a list once.","O(n²) — Quadratic. Has nested loops. Example: bubble sort checking every pair.","Big O focuses on worst case and ignores constants to show how the algorithm truly scales."],key:"Big O describes how an algorithm scales as input grows — helping developers choose the most efficient solution."},
+  array:{eli5:"Think of a row of school lockers numbered 0, 1, 2, 3. Each locker holds exactly one thing. To get something you just say the number and instantly get what is inside. An array is exactly that — a row of numbered boxes in your computer memory.",intro:"An array stores elements in contiguous memory locations where each element is accessed instantly using a zero-based index.",bullets:["Accessing any element by its index is O(1) — instant, regardless of array size.","Elements are stored side by side in memory making arrays very fast to loop through.","Inserting or deleting from the middle is O(n) because all elements after it must shift.","Dynamic arrays like JavaScript arrays grow automatically when they become full.","Arrays are the foundation for stacks, queues, heaps, and hash tables."],key:"An array gives instant O(1) access to any element by index — making it the most fundamental data structure in computing."},
+  pointer:{eli5:"Imagine a treasure map. The map does not contain the gold — it just shows you where the gold is buried. A pointer is that map. Instead of storing the actual data, it stores the address of where the data lives in memory. Follow the address and you find your treasure.",intro:"A pointer is a variable that holds the memory address of another variable, enabling direct memory access and dynamic data structures.",bullets:["In C/C++: int *ptr = &var — ptr holds the address of var, and *ptr gives you the actual value.","The & operator gives you the memory address. The * operator dereferences it to get the value stored there.","Pointers enable dynamic memory allocation using malloc and free in C.","Pointer arithmetic lets you move through memory — ptr+1 jumps to the next element of that type.","Common bugs: null pointer crashes, dangling pointers, and memory leaks from forgetting to free."],key:"A pointer stores a memory address — enabling direct memory manipulation and building complex structures like linked lists and trees."}
+};
+
+function find(q){
+  const s=q.toLowerCase();
+  if(s.includes('recursion'))return KB.recursion;
+  if(s.includes('rest')||s.includes('api'))return KB.restapi;
+  if(s.includes('machine')||s.includes('ml'))return KB.ml;
+  if(s.includes('https')||s.includes('secure'))return KB.https;
+  if(s.includes('big o')||s.includes('notation')||s.includes('complexity'))return KB.bigo;
+  if(s.includes('array'))return KB.array;
+  if(s.includes('pointer'))return KB.pointer;
+  return null;
+}
+
+function showLanding(){document.getElementById('landing').style.display='';document.getElementById('app').classList.remove('active');window.scrollTo({top:0});}
+function showApp(){document.getElementById('landing').style.display='none';document.getElementById('app').classList.add('active');window.scrollTo({top:0});setTimeout(()=>document.getElementById('query').focus(),100);}
+function openTopic(t){showApp();setTimeout(()=>{const el=document.getElementById('query');el.value=t;autoResize(el);explain();},150);}
+
+const msgs=["Thinking about this...","Building a simple analogy...","Adding technical depth...","Almost there..."];
+let timer;
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,160)+'px';}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();explain();}}
+function ask(t){const el=document.getElementById('query');el.value=t;autoResize(el);explain();}
+function setLoad(on){clearInterval(timer);document.getElementById('loading').classList.toggle('visible',on);document.getElementById('out').classList.remove('show');document.getElementById('err').classList.remove('show');if(on){let i=0;const m=document.getElementById('loadmsg');m.textContent=msgs[0];timer=setInterval(()=>{i=(i+1)%msgs.length;m.textContent=msgs[i];},1800);}}
+function mode(m){document.getElementById('p-eli5').classList.toggle('on',m==='eli5');document.getElementById('p-tech').classList.toggle('on',m==='tech');document.getElementById('b1').className='mbtn'+(m==='eli5'?' eli5-on':'');document.getElementById('b2').className='mbtn'+(m==='tech'?' tech-on':'');}
+function explain(){
+  const q=document.getElementById('query').value.trim();
+  if(!q)return;
+  setLoad(true);
+  setTimeout(()=>{
+    const r=find(q);
+    if(r){
+      document.getElementById('rq').textContent=q;
+      document.getElementById('eli5').textContent=r.eli5;
+      document.getElementById('key1').textContent=r.key;
+      document.getElementById('tintro').textContent=r.intro;
+      const ul=document.getElementById('tlist');ul.innerHTML='';
+      r.bullets.forEach(b=>{const li=document.createElement('li');li.textContent=b;ul.appendChild(li);});
+      document.getElementById('key2').textContent=r.key;
+      mode('eli5');setLoad(false);
+      document.getElementById('out').classList.add('show');
+      setTimeout(()=>document.getElementById('out').scrollIntoView({behavior:'smooth',block:'start'}),100);
+    }else{
+      setLoad(false);
+      const el=document.getElementById('err');
+      el.innerHTML='⚠ Topic not found. Try: Recursion, REST API, Machine Learning, HTTPS, Big O, Array, or Pointer.';
+      el.classList.add('show');
+    }
+  },1800);
+}
+let recog=null,listening=false;
+function toggleVoice(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert('Voice not supported. Use Chrome or Edge.');return;}if(listening){stopVoice();return;}recog=new SR();recog.lang='en-US';recog.interimResults=false;recog.maxAlternatives=1;recog.onstart=()=>{listening=true;document.getElementById('voiceBtn').classList.add('listening');document.getElementById('voiceHint').classList.add('show');};recog.onresult=(e)=>{const t=e.results[0][0].transcript;const el=document.getElementById('query');el.value=t;autoResize(el);stopVoice();setTimeout(()=>explain(),300);};recog.onerror=()=>stopVoice();recog.onend=()=>stopVoice();recog.start();}
+function stopVoice(){listening=false;document.getElementById('voiceBtn').classList.remove('listening');document.getElementById('voiceHint').classList.remove('show');if(recog){try{recog.stop();}catch(e){}}}
+</script>
+</body>
+</html>
