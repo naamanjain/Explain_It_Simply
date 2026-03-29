@@ -1,0 +1,62 @@
+{
+  "name": "explain-it-simply",
+  "displayName": "Explain It Simply",
+  "description": "AI-powered dual-level explanations for code and concepts",
+  "version": "1.0.0",
+  "publisher": "explain-it-simply",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Education", "Other"],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./src/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "explainItSimply.openPanel",
+        "title": "Explain It Simply: Open Panel"
+      },
+      {
+        "command": "explainItSimply.explainSelection",
+        "title": "Explain It Simply: Explain Selected Code"
+      },
+      {
+        "command": "explainItSimply.explainFile",
+        "title": "Explain It Simply: Explain Current File"
+      },
+      {
+        "command": "explainItSimply.resetSettings",
+        "title": "Explain It Simply: Reset API Settings"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "explainItSimply.explainSelection",
+          "when": "editorHasSelection",
+          "group": "explainItSimply"
+        },
+        {
+          "command": "explainItSimply.explainFile",
+          "group": "explainItSimply"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "explainItSimply.explainSelection",
+        "key": "ctrl+shift+e",
+        "mac": "cmd+shift+e",
+        "when": "editorHasSelection"
+      },
+      {
+        "command": "explainItSimply.openPanel",
+        "key": "ctrl+shift+x",
+        "mac": "cmd+shift+x"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "echo ready"
+  }
+}
