@@ -290,15 +290,15 @@ ${'const x = 1;\n'.repeat(200)}}` });
     await check('what the audit detects, it also masks before sending', () => {
       // Two vocabularies, one guarantee: a value the auditor calls a credential must
       // never reach the model, even when SECRET_PATTERNS does not know its shape.
-      // Built at runtime on purpose: GitHub push protection scans the pushed bytes and
-      // rejects a literal token shape even when it is a fixture, so the source must not
-      // contain one while the test still exercises a realistic value.
-      const ghp = ['ghp_', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdef12'].join('');
+      // Masking is keyed on the variable NAME, so the fixture deliberately carries no
+      // real token shape: a literal ghp_/AIza value in the source gets flagged by
+      // GitHub push protection and by secret scanners as a leak, which wastes the one
+      // signal that matters. Length >= 8 is all the rule under test needs.
       const cases = [
-        [`const clientSecret = ${JSON.stringify(ghp)};`, ghp],
+        ['const clientSecret = "not-a-real-token-local-fixture-only";', 'not-a-real-token-local-fixture-only'],
         ['let dbPassword = "sup3rs3cretvalue";', 'sup3rs3cretvalue'],
         ['const refresh_token = "rT_abcdefghijklmnop";', 'rT_abcdefghijklmnop'],
-        [`cfg.apiKey = ${JSON.stringify(['AIza', 'C'.repeat(31)].join(''))};`, ['AIza', 'C'.repeat(31)].join('')],
+        ['cfg.apiKey = "local-fixture-value-not-a-key";', 'local-fixture-value-not-a-key'],
       ];
       for (const [line, secret] of cases) {
         const masked = audit.maskCredentialLiterals(line);
