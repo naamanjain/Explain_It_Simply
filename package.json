@@ -1,0 +1,19 @@
+{
+  "name": "explain-it-simply",
+  "version": "2.0.0",
+  "private": true,
+  "description": "AI-powered dual-level explanations for code and concepts: VS Code extension + web app on one shared AI core",
+  "scripts": {
+    "check": "node scripts/check.js",
+    "vendor": "node scripts/vendor-shared.js",
+    "vendor:check": "node scripts/vendor-shared.js --check",
+    "start:web": "node explain-it-simply-website/server.js",
+    "check:vscode": "node scripts/vscode-window-check.js",
+    "check:layout": "node explain-it-simply-vs-code-extension/tools/preview/probe.js",
+    "package:ext": "cd explain-it-simply-vs-code-extension && npx --yes @vscode/vsce package --allow-missing-repository",
+    "check:vscode:package": "node scripts/vscode-window-check.js --from-package"
+  },
+  "engines": {
+    "node": ">=18.17"
+  }
+}

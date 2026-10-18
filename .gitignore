@@ -1,9 +1,31 @@
-# Environment variables
+# --- Secrets ------------------------------------------------------------
+# A file literally named `env` was once committed here and its API key is still
+# in git history, so the bare-name patterns below are deliberate, not tidiness.
 .env
 .env.*
+!.env.example
+env
+env.*
+*.key
+*.pem
+*.p12
+secrets/
 
-# Text env file
-env.txt
-
-# Dependencies
+# --- Dependencies and generated output ----------------------------------
 node_modules/
+dist/
+build/
+out/
+*.vsix
+*.map
+
+# --- Repo archives (they bundle .env and node_modules) ------------------
+*.zip
+
+# --- Local editor / OS / log noise --------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+npm-debug.log*
+yarn-error.log*
+*.log
