@@ -1,46 +1,57 @@
-const express = require("express");
-const cors = require("cors");
-require("dotenv").config();
+'use strict';
+// Process entry point: validate configuration, then listen. Refuses to start in
+// a state where every request would fail, or where a paid API key would be
+// exposed beyond localhost without a token.
 
-const app = express();
-app.use(cors());
-app.use(express.json());
-app.use(express.static('.'));
+const { readConfig, describeStartupProblems, redactApiKey } = require('./src/config');
+const { createApp } = require('./src/app');
 
-const API_KEY = process.env.API_KEY;
+function start(env = process.env) {
+  const config = readConfig(env);
 
-app.post("/api/explain", async (req, res) => {
-  try {
-    const userQuery = req.body.query;
-    if (!userQuery) return res.status(400).json({ error: "Query is required" });
-
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: `You are an expert explainer. For the topic: "${userQuery}", respond ONLY with this exact JSON format, no markdown, no backticks:
-{"eli5":"simple analogy-based explanation for a 5 year old","technical":"• point1\\n• point2\\n• point3","keyTakeaway":"one sentence summary"}`
-            }]
-          }]
-        })
-      }
-    );
-
-    const data = await response.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "{}";
-
-    res.json({
-      choices: [{ message: { content: text } }]
-    });
-
-  } catch (err) {
-    console.log("ERROR:", err.message);
-    res.status(500).json({ error: err.message });
+  const problems = describeStartupProblems(config);
+  if (problems.length) {
+    console.error('Cannot start Explain It Simply server:');
+    for (const problem of problems) console.error(`  - ${problem}`);
+    console.error('Copy .env.example to .env and fill in the values.');
+    process.exitCode = 1;
+    return null;
   }
-});
 
-app.listen(3000, () => console.log("🚀 Server running on http://localhost:3000"));
+  const server = createApp(config).listen(config.port, config.host);
+
+  server.on('error', (error) => {
+    console.error(`Server failed to start: ${error.message}`);
+    process.exitCode = 1;
+  });
+
+  server.on('listening', () => {
+    const { port, address } = server.address();
+    console.log(`Explain It Simply server on http://${address === '::' ? 'localhost' : address}:${port}`);
+    console.log(`  provider ${config.providerId} · model ${config.model} · key ${redactApiKey(config)}`);
+    if (config.modelNotice) console.log(`  note: ${config.modelNotice}`);
+    console.log(`  rate limit ${config.rateLimit.requests}+${config.rateLimit.burst}/${Math.round(config.rateLimit.windowMs / 1000)}s per address`);
+    if (config.allowedOrigins.length) console.log(`  cors allowed: ${config.allowedOrigins.join(', ')}`);
+    if (config.accessToken) console.log('  access token required for /api');
+  });
+
+  for (const signal of ['SIGINT', 'SIGTERM']) {
+    process.once(signal, () => {
+      server.close(() => process.exit(0));
+      setTimeout(() => process.exit(0), 3000).unref();
+    });
+  }
+
+  return server;
+}
+
+if (require.main === module) {
+  try {
+    start();
+  } catch (error) {
+    console.error(`Configuration error: ${error.message}`);
+    process.exitCode = 1;
+  }
+}
+
+module.exports = { start };
