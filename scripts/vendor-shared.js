@@ -32,10 +32,22 @@ function digest(content) {
   return crypto.createHash('sha256').update(content).digest('hex');
 }
 
+// Git with core.autocrlf=true rewrites text files to CRLF on checkout, so a
+// byte-for-byte comparison reports a perfectly clean clone as stale — this gate went
+// red on Windows for exactly that reason. Content is what is being asserted, so
+// line endings are normalised before hashing on both sides.
+function normalise(content) {
+  return String(content).replace(/\r\n/g, '\n');
+}
+
+function digestFile(file) {
+  return digest(normalise(fs.readFileSync(file, 'utf8')));
+}
+
 function buildManifest(dir) {
   const files = {};
   for (const rel of listFiles(dir)) {
-    files[rel] = digest(fs.readFileSync(path.join(dir, rel)));
+    files[rel] = digestFile(path.join(dir, rel));
   }
   return { source: dir === SOURCE ? 'shared/' : 'vendored copy', files, count: Object.keys(files).length };
 }
@@ -74,8 +86,8 @@ function check() {
       continue;
     }
     const text = fs.readFileSync(vendored, 'utf8');
-    const stripped = text.replace(/^\/\* Vendored from [\s\S]*?\*\/\n/, '');
-    if (digest(stripped) !== hash) problems.push(`${rel}: differs from shared/ (edit shared/, then run npm run vendor)`);
+    const stripped = text.replace(/^\/\* Vendored from [\s\S]*?\*\/\r?\n/, '');
+    if (digest(normalise(stripped)) !== hash) problems.push(`${rel}: differs from shared/ (edit shared/, then run npm run vendor)`);
     if (!text.startsWith('/* Vendored from')) problems.push(`${rel}: missing the vendored header`);
   }
   for (const rel of Object.keys(stored.files || {})) {
