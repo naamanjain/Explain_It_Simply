@@ -1,0 +1,29 @@
+{
+  "source": "shared/",
+  "files": {
+    "ai/extractJson.js": "60414d4942826f3c54c6d04059aee7fa8fb4c8fc42e757578f8ba81e30434369",
+    "audit/localFindings.js": "0c1c8ec206b5e71cd5396c00c6f5466e670f0a04f8d23b6eaf90767f4abb4649",
+    "context/contextEngine.js": "9347ee75e8570c1a5d3fb6d636659d98bab24fd3ac7def8566228c7c0b720b8f",
+    "errors.js": "15d81e53a89903b4290b8ce837984767e1377f1320cf4a21225b9973520abc9d",
+    "http/client.js": "ca6732b5641c06b69e88c489047d27936382881785b6612a7350d86474285eec",
+    "http/sse.js": "6d213100b53cab9bb2f40480fd08df5d250cd3b30b8bf226d52fa121a964ad8b",
+    "index.js": "85c9f55be4b22e363cb7213b3fd08ef0c29e1bfc74ada578bc6da4f5ecd59389",
+    "observability/logger.js": "6360710794a3a5abc8f9511c48cfd1cb92ee6fc3cb7f06afa8095b6aea92998e",
+    "pipeline/pipeline.js": "13550a66bf06bede7a03a04c625ba354156749c4f8bc3b12c8b2628b852d4229",
+    "pipeline/requestLedger.js": "37457059169831bd695dc12bcad997e83a55d101c1b6d35661e55d1c9977e3dd",
+    "pipeline/retry.js": "ca4d7f8d361f89d81291c00c946448499c5f22faae14359a36410b1207bc71ef",
+    "prompts/tasks.js": "5ffc970c1b6dd0be1ab9065f6ca3fcdcaa4416fe5000ea55c210c71cb49f6f0f",
+    "providers/anthropic.js": "02227eacd12b4ec3cd4f6f753c2b7e67a64211e44aa6bd6b9bb2226775b1ee11",
+    "providers/base.js": "7ec7bcecbd4bc52be2c3cc4ec26104a2d6dc60fedae2df386e4c568d0fc187f0",
+    "providers/google.js": "0f851a0bbe206eb0fe9b11be850dd40ca256eede4b6a4b0a97635e09eed1dd11",
+    "providers/index.js": "6b15d1f0ba5193064fd0d7bad8416c853f0b59b794af06d8953fcb9b561549ee",
+    "providers/keyPool.js": "f8fc2c6829b5804cdc41564480dcb992c6e3ff56297dc6a37b2db7c5b38b03cc",
+    "providers/openaiCompatible.js": "f31eee5a0e34d11439d805709213ce5cebce8fb33138a8172e51ee509b6eed4e",
+    "providers/registry.js": "74db2e5da8aaf7779c35c7a9652073dc9c7e97e4eb0e968f083600f1f9da545d",
+    "schema/codeChange.js": "29275f13375db3fd81f34bbcc95274408d73bc1e6f3aeeb4956ee4af895c8b3a",
+    "schema/explanation.js": "c32d7310ca835bf2b6a4bf35bca732e964f369ab2d40f6b8277ab05138fb0a03",
+    "schema/jsonSchema.js": "2e1d5cb3a40d1645a90e94eb76d91b9360d311760ed67cf19df6dd854fdb06ac",
+    "schema/util.js": "a99b6a7d24b35f570dfcc67796fa5a56db76e94f86ea519234deaa3c1aca738b"
+  },
+  "count": 23
+}
